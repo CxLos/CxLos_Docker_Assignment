@@ -1,4 +1,18 @@
-# 📦 Project Setup
+# 🐋 CxLos Docker Assignment
+---
+
+## Project Description
+Hello and Welcome to my docker practice repo! here is where you will see me learning about docker and how to use it.
+
+## 📂 Table of Contents 
+    
+- [1. Install Homebrew (Mac Only)](#-1-install-homebrew-mac-only)
+- [2. Install and Configure Git](#-2-install-and-configure-git)
+- [3. Clone the Repository](#-3-clone-the-repository)
+- [4. Install Python 3.10+](#️-4-install-python-310)
+- [5. (Optional) Docker Setup](#-5-optional-docker-setup)
+- [6. Running the Project](#-6-running-the-project)
+- [Quick Links](#-quick-links)
 
 ---
 
@@ -214,47 +228,6 @@ docker run -it --rm <image-name>
 
 ---
 
-# 📝 7. Submission Instructions
-
-After finishing your work:
-
-```bash
-git add .
-git commit -m "Complete Module X"
-git push origin main
-```
-
-Then submit the GitHub repository link as instructed.
-
----
-
-# 🔥 Useful Commands Cheat Sheet
-
-| Action                         | Command                                          |
-| ------------------------------- | ------------------------------------------------ |
-| Install Homebrew (Mac)          | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
-| Install Git                     | `brew install git` or Git for Windows installer |
-| Configure Git Global Username  | `git config --global user.name "Your Name"`      |
-| Configure Git Global Email     | `git config --global user.email "you@example.com"` |
-| Clone Repository                | `git clone <repo-url>`                          |
-| Create Virtual Environment     | `python3 -m venv venv`                           |
-| Activate Virtual Environment   | `source venv/bin/activate` / `venv\Scripts\activate.bat` |
-| Install Python Packages        | `pip install -r requirements.txt`               |
-| Build Docker Image              | `docker build -t <image-name> .`                |
-| Run Docker Container            | `docker run -it --rm <image-name>`               |
-| Push Code to GitHub             | `git add . && git commit -m "message" && git push` |
-
----
-
-# 📋 Notes
-
-- Install **Homebrew** first on Mac.
-- Install and configure **Git** and **SSH** before cloning.
-- Use **Python 3.10+** and **virtual environments** for Python projects.
-- **Docker** is optional depending on the project.
-
----
-
 # 📎 Quick Links
 
 - [Homebrew](https://brew.sh/)
@@ -270,3 +243,5 @@ Then submit the GitHub repository link as instructed.
 ## My DockerHub Image
 
 ![Docker QR Image](./qr_codes/QRCode_20260311044528.png)
+
+---
