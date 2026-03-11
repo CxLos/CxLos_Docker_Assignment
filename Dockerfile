@@ -25,5 +25,6 @@ USER myuser
 # Use the Python interpreter as the entrypoint and the script as the first argument
 # This allows additional command-line arguments to be passed to the script via the docker run command
 ENTRYPOINT ["python", "main.py"]
+
 # this sets a default argument, its also set in the program but this just illustrates how to use cmd and override it from the terminal
 CMD ["--url","http://github.com/cxlos"]

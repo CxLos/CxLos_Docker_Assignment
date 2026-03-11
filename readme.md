@@ -60,8 +60,6 @@ Accept the default options during installation.
 git --version
 ```
 
----
-
 ## Configure Git Globals
 
 Set your name and email so Git tracks your commits properly:
@@ -76,8 +74,6 @@ Confirm the settings:
 ```bash
 git config --list
 ```
-
----
 
 ## Generate SSH Keys and Connect to GitHub
 
@@ -167,8 +163,6 @@ or
 python --version
 ```
 
----
-
 ## Create and Activate a Virtual Environment
 
 (Optional but recommended)
@@ -236,12 +230,18 @@ docker run -it --rm <image-name>
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [GitHub SSH Setup Guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
-## Docker Repo
+---
+
+<div align="center">
+  <h1>🖼️ Images</h1>
+</div>
+
+## Docker Hub Repo:
 
 ![CxLos Docker Assignment](./qr_codes/QRCode_20260311051633.png)
 
-## My DockerHub Image
+## Github Repo:
 
-![Docker QR Image](./qr_codes/QRCode_20260311044528.png)
+![Docker QR Image](./qr_codes/QRCode_20260311233610.png)
 
 ---
