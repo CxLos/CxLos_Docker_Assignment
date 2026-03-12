@@ -29,6 +29,10 @@ Hello and Welcome to my docker practice repo! here is where you will see me lear
 
 ![Docker server logs](screenshots/image2.png)
 
+## Successful Github Actions run
+
+![github actions](screenshots/image3.png)
+
 ---
 
 # 🧩 1. Install Homebrew (Mac Only)
