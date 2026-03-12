@@ -6,6 +6,7 @@ Hello and Welcome to my docker practice repo! here is where you will see me lear
 
 ## 📂 Table of Contents 
     
+- [Preview](#️-application-preview)
 - [1. Install Homebrew (Mac Only)](#-1-install-homebrew-mac-only)
 - [2. Install and Configure Git](#-2-install-and-configure-git)
 - [3. Clone the Repository](#-3-clone-the-repository)
@@ -13,6 +14,20 @@ Hello and Welcome to my docker practice repo! here is where you will see me lear
 - [5. (Optional) Docker Setup](#-5-optional-docker-setup)
 - [6. Running the Project](#-6-running-the-project)
 - [Quick Links](#-quick-links)
+- [Images](#️-images)
+- [Refelction](#️-reflection)
+
+---
+
+# Application Preview
+
+**🌐 [View on Docker Hub](https://hub.docker.com/repository/docker/cxlos/cxlos_qr_code_maker/general)**
+
+![screenshot of docker hub repo](screenshots/image1.png)
+
+## Successfully Booted-up Docker Server
+
+![Docker server logs](screenshots/image2.png)
 
 ---
 
@@ -232,9 +247,7 @@ docker run -it --rm <image-name>
 
 ---
 
-<div align="center">
-  <h1>🖼️ Images</h1>
-</div>
+# 🖼️ Images
 
 ## Docker Hub Repo:
 
@@ -244,4 +257,9 @@ docker run -it --rm <image-name>
 
 ![Docker QR Image](./qr_codes/QRCode_20260311233610.png)
 
+##
+
 ---
+
+# 🪞Reflection
+

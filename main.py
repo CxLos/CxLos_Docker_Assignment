@@ -1,3 +1,6 @@
+
+# =========== Imports =========== #
+
 import sys
 import qrcode
 from dotenv import load_dotenv
@@ -11,14 +14,17 @@ import validators  # Import the validators package
 # Load environment variables
 load_dotenv()
 
+# =========== Main Code =========== #
+
 # Get current file path
-print(f"Current file path: {Path(__file__).resolve()}")
+# print(f"Current file path: {Path(__file__).resolve()}")
 
 # Environment Variables for Configuration
 QR_DIRECTORY = os.getenv('QR_CODE_DIR', 'qr_codes')  # Directory for saving QR code
 FILL_COLOR = os.getenv('FILL_COLOR', 'red')  # Fill color for the QR code
-BACK_COLOR = os.getenv('BACK_COLOR', 'white')  # Background color for the QR code
+BACK_COLOR = os.getenv('BACK_COLOR', 'blue')  # Background color for the QR code
 
+# Set up logging configuration
 def setup_logging():
     logging.basicConfig(
         level=logging.INFO,
@@ -28,6 +34,7 @@ def setup_logging():
         ]
     )
 
+# Function to create directory if it doesn't exist
 def create_directory(path: Path):
     try:
         path.mkdir(parents=True, exist_ok=True)
@@ -35,6 +42,7 @@ def create_directory(path: Path):
         logging.error(f"Failed to create directory {path}: {e}")
         exit(1)
 
+# Function to validate the URL using validators package
 def is_valid_url(url):
     if validators.url(url):
         return True
@@ -42,6 +50,7 @@ def is_valid_url(url):
         logging.error(f"Invalid URL provided: {url}")
         return False
 
+# Function to generate and save the QR code
 def generate_qr_code(data, path, fill_color='red', back_color='white'):
     if not is_valid_url(data):
         return  # Exit the function if the URL is not valid
@@ -59,7 +68,9 @@ def generate_qr_code(data, path, fill_color='red', back_color='white'):
     except Exception as e:
         logging.error(f"An error occurred while generating or saving the QR code: {e}")
 
+# ========== Main Function =========== #
 def main():
+
     # Set up command-line argument parsing
     parser = argparse.ArgumentParser(description='Generate a QR code.')
     parser.add_argument('--url', help='The URL to encode in the QR code', default='https://github.com/kaw393939')
