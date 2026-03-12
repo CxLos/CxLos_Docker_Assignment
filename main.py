@@ -73,7 +73,7 @@ def generate_qr_code(data, path, fill_color='red', back_color='white'):
         logging.error(f"An error occurred while generating or saving the QR code: {e}")
 
 # ========== Main Function =========== #
-def main():
+def main(): # pragma: no cover
 
     # Set up command-line argument parsing
     parser = argparse.ArgumentParser(description='Generate a QR code.')
@@ -96,5 +96,7 @@ def main():
     # Generate and save the QR code
     generate_qr_code(args.url, qr_code_full_path, FILL_COLOR, BACK_COLOR)
 
+# ========== Run Application ========== #
+
 if __name__ == "__main__":
-    main()
+    main() # pragma: no cover

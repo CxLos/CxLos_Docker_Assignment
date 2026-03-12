@@ -46,6 +46,23 @@ def test_generate_qr_code_with_invalid_url():
         generate_qr_code("htps:/githu.cm", test_path, "green", "yellow")
         assert not test_path.exists()
 
+# =========== Exception Handling Tests =========== #
+
+def test_fail_to_create_directory():
+    """Test that exception handler is triggered when directory creation fails"""
+
+    with patch('main.Path.mkdir') as mock_mkdir:
+        mock_mkdir.side_effect = Exception("Failed to create directory")
+
+        with patch('main.logging.error') as mock_log:
+            
+            with pytest.raises(SystemExit) as exit_info:
+                path = Path('invalide/directory')
+                create_directory(path)
+            
+            assert exit_info.value.code == 1
+            mock_log.assert_called_once()
+
 def test_generate_qr_code_handles_exception():
     """Test that exception handler is triggered when QR generation fails"""
 
