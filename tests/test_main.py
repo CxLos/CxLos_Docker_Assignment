@@ -23,10 +23,6 @@ def test_is_valid_url_logs_error_for_invalid_url():
     result = is_valid_url(url)
     assert result == False
 
-def test_failed_qr_code_error_message():
-    """Test that logging.error is called when qr code failed"""
-    
-
 def test_create_directory():
     """Test that directory is created successfully"""
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -49,3 +45,16 @@ def test_generate_qr_code_with_invalid_url():
         test_path = Path(tmpdir) / "test_qr.png"
         generate_qr_code("htps:/githu.cm", test_path, "green", "yellow")
         assert not test_path.exists()
+
+def test_generate_qr_code_handles_exception():
+    """Test that exception handler is triggered when QR generation fails"""
+
+    with patch('main.qrcode.QRCode') as mock_qr:
+        mock_qr.side_effect = Exception("Simulated QR generation error") 
+        
+        with tempfile.TemporaryDirectory() as tmpdir:
+            test_path = Path(tmpdir) / "test_qr.png"
+            with patch('main.logging.error') as mock_log:
+                generate_qr_code("https://github.com", test_path)
+                mock_log.assert_called_once()
+            assert not test_path.exists()
