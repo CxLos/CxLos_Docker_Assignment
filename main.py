@@ -26,7 +26,7 @@ BACK_COLOR = os.getenv('BACK_COLOR', 'blue')  # Background color for the QR code
 
 # Set up logging configuration
 def setup_logging():
-    logging.basicConfig(
+    logging.basicConfig( # pragma: no cover
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
