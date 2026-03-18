@@ -1,3 +1,4 @@
+
 # Use the official Python image from the Python Docker Hub repository as the base image
 FROM python:3.12-slim-bullseye
 
