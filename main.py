@@ -3,6 +3,8 @@
 
 import uvicorn
 import logging
+
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
@@ -28,6 +30,9 @@ logger = logging.getLogger(__name__)
 
 # Create an instance of the FastAPI application
 app = FastAPI()
+
+# Mount the static files directory to serve CSS, JavaScript, and other static assets. This allows the application to serve files from the "assets" directory when requested by the client, making it possible to include stylesheets and scripts in the web pages.
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
 # Setup templates directory
 templates = Jinja2Templates(directory="templates")
