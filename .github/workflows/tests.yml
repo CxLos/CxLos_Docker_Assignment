@@ -226,8 +226,8 @@ jobs:
        with:
          push: true
          tags: |
-           cxlos/cxlos_docker_assignment:latest
-           cxlos/cxlos_docker_assignment:${{ github.sha }}
+           cxlos/601_module8:latest
+           cxlos/601_module8:${{ github.sha }}
          platforms: linux/amd64,linux/arm64
-         cache-from: type=registry,ref=cxlos/cxlos_docker_assignment:cache
+         cache-from: type=registry,ref=cxlos/601_module8:cache
          cache-to: type=inline,mode=max
