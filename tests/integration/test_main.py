@@ -44,3 +44,23 @@ def test_add_invalid_input():
     response = client.post("/add", json={"a": "x", "b": 2})
     assert response.status_code == 400
 
+# ============ POST /subtract =========== #
+
+def test_subtract_two_numbers():
+    response = client.post("/subtract", json={"a": 10, "b": 3})
+    assert response.status_code == 200
+    assert response.json() == {"result": 7.0}
+
+def test_subtract_resulting_in_negative():
+    response = client.post("/subtract", json={"a": 3, "b": 10})
+    assert response.status_code == 200
+    assert response.json() == {"result": -7.0}
+
+def test_subtract_floats():
+    response = client.post("/subtract", json={"a": 5.5, "b": 2.2})
+    assert response.status_code == 200
+    assert abs(response.json()["result"] - 3.3) < 0.0001
+
+def test_subtract_invalid_input():
+    response = client.post("/subtract", json={"a": 10, "b": "y"})
+    assert response.status_code == 400
