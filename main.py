@@ -69,6 +69,14 @@ async def read_root(request: Request):
     """
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/health")
+async def health_check():
+    """
+    Health check endpoint used by Docker to verify the container is running correctly.
+    Returns a simple JSON response indicating the service is healthy.
+    """
+    return {"status": "healthy"}
+
 @app.post("/add", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
 async def add_route(operation: OperationRequest):
     """
@@ -123,4 +131,4 @@ async def divide_route(operation: OperationRequest):
 # ========== Run Application ========== #
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
