@@ -64,3 +64,24 @@ def test_subtract_floats():
 def test_subtract_invalid_input():
     response = client.post("/subtract", json={"a": 10, "b": "y"})
     assert response.status_code == 400
+
+  # ============ POST /multiply =========== #
+
+def test_multiply_two_numbers():
+    response = client.post("/multiply", json={"a": 4, "b": 5})
+    assert response.status_code == 200
+    assert response.json() == {"result": 20.0}
+
+def test_multiply_by_zero():
+    response = client.post("/multiply", json={"a": 99, "b": 0})
+    assert response.status_code == 200
+    assert response.json() == {"result": 0.0}
+
+def test_multiply_negative_numbers():
+    response = client.post("/multiply", json={"a": -3, "b": 4})
+    assert response.status_code == 200
+    assert response.json() == {"result": -12.0}
+
+def test_multiply_invalid_input():
+    response = client.post("/multiply", json={"a": "z", "b": 5})
+    assert response.status_code == 400

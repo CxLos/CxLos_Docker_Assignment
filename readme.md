@@ -1,4 +1,4 @@
-# 🐋 CxLos Docker Assignment
+# 🐋 CxLos Docker Calculator Assignment
 ---
 
 ## Project Description
@@ -19,11 +19,17 @@ Hello and Welcome to my docker practice repo! here is where you will see me lear
 
 ---
 
-# Application Preview
+# Calculator App Preview
+
+**🧮 [Calculator App](https://hub.docker.com/repository/docker/cxlos/601_module8/general)**
+
+![Calculator app screenshot](screenshots/app_preview.png)
+
+# DockerHub Repo Preview
 
 **🌐 [View on Docker Hub](https://hub.docker.com/repository/docker/cxlos/cxlos_qr_code_maker/general)**
 
-![screenshot of docker hub repo](screenshots/image1.png)
+![screenshot of docker hub repo](screenshots/module8_repo.png)
 
 ## Successfully Booted-up Docker Server
 
