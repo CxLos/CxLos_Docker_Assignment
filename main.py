@@ -1,24 +1,32 @@
 
 # =========== Imports =========== #
 
+import uvicorn
+import logging
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel, Field, field_validator  # Use @validator for Pydantic 1.x
 from fastapi.exceptions import RequestValidationError
-from app.operations import add, subtract, multiply, divide  # Ensure correct import path
-import uvicorn
-import logging
 
-# =========== Main Code =========== #
+from pydantic import BaseModel, Field, field_validator  # Use @validator for Pydantic 1.x
+from app.operations import add, subtract, multiply, divide  # Ensure correct import path
+
+# =========== Get cwd =========== #
 
 # Get current file path
 # print(f"Current file path: {Path(__file__).resolve()}")
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
+# =========== Main Code =========== #
+
+# Seting up logging configuration for the application. This will allow us to log important information and errors during the execution of the application, which is crucial for debugging and monitoring purposes.
+logging.basicConfig(
+    level=logging.INFO # Set the logging level to INFO, which means that all messages at this level and above (WARNING, ERROR, CRITICAL) will be logged.
+)
+
+# Create a logger instance for this module. This allows us to log messages with the context of this specific module, making it easier to identify where logs are coming from when analyzing logs from the entire application.
 logger = logging.getLogger(__name__)
 
+# Create an instance of the FastAPI application
 app = FastAPI()
 
 # Setup templates directory
@@ -29,6 +37,7 @@ class OperationRequest(BaseModel):
     a: float = Field(..., description="The first number")
     b: float = Field(..., description="The second number")
 
+    # field_validator is used to validate the input data for both 'a' and 'b'. It checks if the values are either integers or floats. If not, it raises a ValueError with a descriptive message. This ensures that the API receives valid numerical input for the operations.
     @field_validator('a', 'b')  # Correct decorator for Pydantic 1.x
     def validate_numbers(cls, value):
         if not isinstance(value, (int, float)):
