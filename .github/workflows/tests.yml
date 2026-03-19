@@ -73,17 +73,17 @@ jobs:
    steps:
 
      # STEP 1: Clone the repository into the runner's workspace
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
 
      # STEP 2: Install Python 3.10 — ensures a consistent interpreter version
-     - uses: actions/setup-python@v4
+     - uses: actions/setup-python@v5
        with:
          python-version: '3.10'
 
      # STEP 3: Attempt to restore a previously saved pip/venv cache.
      #   Cache key is derived from the OS name and a hash of requirements.txt.
      #   If requirements.txt changes, a new cache is created automatically.
-     - uses: actions/cache@v3
+     - uses: actions/cache@v4
        with:
          path: |
            venv
