@@ -1,102 +1,126 @@
 
 # =========== Imports =========== #
 
-import sys
-import qrcode
-from dotenv import load_dotenv
-import logging.config
-from pathlib import Path
-import os
-import argparse
-from datetime import datetime
-import validators  # Import the validators package
-
-# Load environment variables
-load_dotenv()
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, Field, field_validator  # Use @validator for Pydantic 1.x
+from fastapi.exceptions import RequestValidationError
+from app.operations import add, subtract, multiply, divide  # Ensure correct import path
+import uvicorn
+import logging
 
 # =========== Main Code =========== #
 
 # Get current file path
 # print(f"Current file path: {Path(__file__).resolve()}")
 
-# Environment Variables for Configuration
-QR_DIRECTORY = os.getenv('QR_CODE_DIR', 'qr_codes')  # Directory for saving QR code
-FILL_COLOR = os.getenv('FILL_COLOR', 'red')  # Fill color for the QR code
-BACK_COLOR = os.getenv('BACK_COLOR', 'blue')  # Background color for the QR code
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Set up logging configuration
-def setup_logging():
-    logging.basicConfig( # pragma: no cover
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.StreamHandler(sys.stdout),
-        ]
+app = FastAPI()
+
+# Setup templates directory
+templates = Jinja2Templates(directory="templates")
+
+# Pydantic model for request data
+class OperationRequest(BaseModel):
+    a: float = Field(..., description="The first number")
+    b: float = Field(..., description="The second number")
+
+    @field_validator('a', 'b')  # Correct decorator for Pydantic 1.x
+    def validate_numbers(cls, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError('Both a and b must be numbers.')
+        return value
+
+# Pydantic model for successful response
+class OperationResponse(BaseModel):
+    result: float = Field(..., description="The result of the operation")
+
+# Pydantic model for error response
+class ErrorResponse(BaseModel):
+    error: str = Field(..., description="Error message")
+
+# Custom Exception Handlers
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    logger.error(f"HTTPException on {request.url.path}: {exc.detail}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.detail},
     )
 
-# Function to create directory if it doesn't exist
-def create_directory(path: Path):
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    # Extracting error messages
+    error_messages = "; ".join([f"{err['loc'][-1]}: {err['msg']}" for err in exc.errors()])
+    logger.error(f"ValidationError on {request.url.path}: {error_messages}")
+    return JSONResponse(
+        status_code=400,
+        content={"error": error_messages},
+    )
+
+@app.get("/")
+async def read_root(request: Request):
+    """
+    Serve the index.html template.
+    """
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.post("/add", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+async def add_route(operation: OperationRequest):
+    """
+    Add two numbers.
+    """
     try:
-        path.mkdir(parents=True, exist_ok=True)
+        result = add(operation.a, operation.b)
+        return OperationResponse(result=result)
     except Exception as e:
-        logging.error(f"Failed to create directory {path}: {e}")
-        exit(1)
+        logger.error(f"Add Operation Error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
-# Function to validate the URL using validators package
-def is_valid_url(url):
-    if validators.url(url):
-        return True
-    else:
-        logging.error(f"Invalid URL provided: {url}")
-        return False
-
-# Function to generate and save the QR code
-def generate_qr_code(data, path, fill_color='red', back_color='white'):
-    if not is_valid_url(data):
-        return  # Exit the function if the URL is not valid
-
+@app.post("/subtract", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+async def subtract_route(operation: OperationRequest):
+    """
+    Subtract two numbers.
+    """
     try:
-        qr = qrcode.QRCode(
-                version=1, # Controls the size of the QR code (1 is the smallest)
-                box_size=10, # Controls how many pixels each "box" of the QR code is
-                border=5 # Controls how many boxes thick the border should be
-            )
-        qr.add_data(data)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color=fill_color, back_color=back_color)
-
-        with path.open('wb') as qr_file:
-            img.save(qr_file)
-        logging.info(f"QR code successfully saved to {path}")
-
+        result = subtract(operation.a, operation.b)
+        return OperationResponse(result=result)
     except Exception as e:
-        logging.error(f"An error occurred while generating or saving the QR code: {e}")
+        logger.error(f"Subtract Operation Error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
-# ========== Main Function =========== #
-def main(): # pragma: no cover
+@app.post("/multiply", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+async def multiply_route(operation: OperationRequest):
+    """
+    Multiply two numbers.
+    """
+    try:
+        result = multiply(operation.a, operation.b)
+        return OperationResponse(result=result)
+    except Exception as e:
+        logger.error(f"Multiply Operation Error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
-    # Set up command-line argument parsing
-    parser = argparse.ArgumentParser(description='Generate a QR code.')
-    parser.add_argument('--url', help='The URL to encode in the QR code', default='https://github.com/kaw393939')
-    args = parser.parse_args()
-
-    # Initial logging setup
-    setup_logging()
-    
-    # Generate a timestamped filename for the QR code
-    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-    qr_filename = f"QRCode_{timestamp}.png"
-
-    # Create the full path for the QR code file
-    qr_code_full_path = Path.cwd() / QR_DIRECTORY / qr_filename
-    
-    # Ensure the QR code directory exists
-    create_directory(Path.cwd() / QR_DIRECTORY)
-    
-    # Generate and save the QR code
-    generate_qr_code(args.url, qr_code_full_path, FILL_COLOR, BACK_COLOR)
+@app.post("/divide", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+async def divide_route(operation: OperationRequest):
+    """
+    Divide two numbers.
+    """
+    try:
+        result = divide(operation.a, operation.b)
+        return OperationResponse(result=result)
+    except ValueError as e:
+        logger.error(f"Divide Operation Error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Divide Operation Internal Error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # ========== Run Application ========== #
 
 if __name__ == "__main__":
-    main() # pragma: no cover
+    uvicorn.run(app, host="127.0.0.1", port=8000)

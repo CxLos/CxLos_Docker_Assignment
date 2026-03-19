@@ -108,9 +108,9 @@ jobs:
      - name: Run tests
        run: |
          source venv/bin/activate
-         pytest tests/unit/ --cov=main --cov=app --junitxml=test-results/junit.xml
-         pytest tests/integration/ --no-cov --override-ini="addopts=" || [ $? -eq 5 ]
-         pytest tests/e2e/ --no-cov --override-ini="addopts=" || [ $? -eq 5 ]
+         pytest tests/unit/ --cov=main --junitxml=test-results/junit.xml
+         pytest tests/integration/
+         pytest tests/e2e/
 
  # ============================================================================
  # JOB 2: security
