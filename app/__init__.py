@@ -1,5 +1,5 @@
 
-from operations import add, subtract, multiply, divide
+from .operations import add, subtract, multiply, divide
 
 __all__ = [
   'add', 

@@ -1,12 +1,11 @@
 # =============== Imports ============== #
 
 import pytest  # Import the pytest framework for writing and running tests
-from typing import Union  # Import Union for type hinting multiple possible types
+from typing import Union  # what union does is it allows us to specify that a variable can be of multiple types, in this case, either int or float
 from app.operations import add, subtract, multiply, divide  # Import the calculator functions from the operations module
 
 # Define a type alias for numbers that can be either int or float
 Number = Union[int, float]
-
 
 # ---------------------------------------------
 # Unit Tests for the 'add' Function
