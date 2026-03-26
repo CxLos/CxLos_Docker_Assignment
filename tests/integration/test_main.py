@@ -85,3 +85,30 @@ def test_multiply_negative_numbers():
 def test_multiply_invalid_input():
     response = client.post("/multiply", json={"a": "z", "b": 5})
     assert response.status_code == 400
+
+# ============ POST /divide =========== #
+
+def test_divide_two_numbers():
+    response = client.post("/divide", json={"a": 10, "b": 2})
+    assert response.status_code == 200
+    assert response.json() == {"result": 5.0}
+
+def test_divide_resulting_in_float():
+    response = client.post("/divide", json={"a": 7, "b": 2})
+    assert response.status_code == 200
+    assert response.json() == {"result": 3.5}
+
+def test_divide_by_zero_returns_400():
+    response = client.post("/divide", json={"a": 10, "b": 0})
+    assert response.status_code == 400
+    assert "error" in response.json()
+
+def test_divide_negative_dividend():
+    response = client.post("/divide", json={"a": -9, "b": 3})
+    assert response.status_code == 200
+    assert response.json() == {"result": -3.0}
+
+def test_divide_invalid_input():
+    response = client.post("/divide", json={"a": 10, "b": "z"})
+    assert response.status_code == 400
+# ===========================================================
