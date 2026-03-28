@@ -148,7 +148,7 @@ jobs:
      # STEP 2: Build the Docker image locally using the project Dockerfile.
      #   Tagged as 'app:test' for identification during scanning.
      - name: Build image
-       run: docker build -t app:test .
+       run: docker build --no-cache -t app:test .
 
      # STEP 3: Run Trivy to scan the built image for security vulnerabilities.
      #   Fails the pipeline (exit-code: 1) if CRITICAL or HIGH CVEs are found
