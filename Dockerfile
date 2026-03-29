@@ -1,6 +1,6 @@
 
 # Use the official Python image from the Python Docker Hub repository as the base image
-FROM python:3.12-slim-bullseye
+FROM python:3.12-slim-bookworm
 
 # Set environment variables to prevent Python from writing .pyc files and to ensure that output is sent directly to the terminal without buffering
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -11,7 +11,6 @@ WORKDIR /app
 
 # Update the package list, upgrade existing packages, and install necessary system dependencies for building Python packages and running the application
 RUN apt-get update && \
-   apt-get upgrade -y && \
    apt-get install -y --no-install-recommends gcc python3-dev libssl-dev && \
    rm -rf /var/lib/apt/lists/* && \
    python -m pip install --upgrade pip setuptools>=70.0.0 wheel && \
