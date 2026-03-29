@@ -69,6 +69,10 @@ services:
     networks:
       - app-network  # Connects this service to the shared bridge network.
 
+# =========================================
+# Database Service Configuration
+# =========================================
+
   # Service: db (PostgreSQL)
   db:
     image: postgres:17  # Pinned to PostgreSQL 17 for compatibility with the data directory format.
@@ -88,6 +92,10 @@ services:
       retries: 5
     networks:
       - app-network
+
+# =========================================
+# Admin Interface for Database Management
+# =========================================
 
   # Service: pgadmin
   pgadmin:
