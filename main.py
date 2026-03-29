@@ -3,6 +3,7 @@
 
 import uvicorn
 import logging
+from pathlib import Path
 
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException, Request
@@ -12,6 +13,20 @@ from fastapi.exceptions import RequestValidationError
 
 from pydantic import BaseModel, Field, field_validator  # Use @validator for Pydantic 1.x
 from app.operations import add, subtract, multiply, divide  # Ensure correct import path
+
+# ----- Colorama ----- #
+
+import colorama
+from colorama import Fore, Back, Style, init
+init(autoreset=True) # Automatically reset color after each print
+
+for color_name in dir(colorama.Fore):
+    if not color_name.startswith('_'): # Skip private attributes
+        color = getattr(colorama.Fore, color_name) # Get the actual color code
+        # print(f"{color}{color_name}{colorama.Style.RESET_ALL}") # Print color name in its own color
+    # print('\n')
+
+# print(Fore.BLACK + '-' * 200, '\n')
 
 # =========== Get cwd =========== #
 
@@ -32,10 +47,11 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 # Mount the static files directory to serve CSS, JavaScript, and other static assets. This allows the application to serve files from the "assets" directory when requested by the client, making it possible to include stylesheets and scripts in the web pages.
-app.mount("/assets", StaticFiles(directory="assets"), name="assets")
+BASE_DIR = Path(__file__).parent
+app.mount("/assets", StaticFiles(directory=BASE_DIR / "assets"), name="assets")
 
 # Setup templates directory
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 # Pydantic model for request data
 class OperationRequest(BaseModel):

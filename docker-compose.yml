@@ -50,6 +50,7 @@ services:
     environment:
       - PYTHONDONTWRITEBYTECODE=1  # Prevents Python from writing `.pyc` files to disk. This ensures that only source code is maintained, keeping the container clean.
       - PYTHONUNBUFFERED=1  # Forces Python to flush the output buffer immediately. This is useful for real-time logging, ensuring that logs are visible as they are generated.
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/fastapi_db  # Connection string for the PostgreSQL database running in the 'db' service.
     
     # Command Execution
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload  
@@ -59,6 +60,61 @@ services:
       # - `--host 0.0.0.0`: Binds the server to all network interfaces, making it accessible externally.
       # - `--port 8000`: Sets the port on which the server will listen inside the container.
       # - `--reload`: Enables automatic reloading of the server when code changes are detected. This is particularly useful during development for immediate feedback without manual restarts.
+    
+    # Dependency
+    depends_on:
+      - db  # Ensures the PostgreSQL database container starts before the web service.
+    
+    # Networking
+    networks:
+      - app-network  # Connects this service to the shared bridge network.
+
+  # Service: db (PostgreSQL)
+  db:
+    image: postgres:17  # Pinned to PostgreSQL 17 for compatibility with the data directory format.
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres        # Default superuser name for the database.
+      POSTGRES_PASSWORD: postgres    # Password for the superuser. In production, use secrets or env files.
+      POSTGRES_DB: fastapi_db        # Name of the database to create on first run.
+    ports:
+      - "5432:5432"  # Maps the default PostgreSQL port to the host for direct access.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persists database data across container restarts.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]  # Checks if PostgreSQL is ready to accept connections.
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # Service: pgadmin
+  pgadmin:
+    image: dpage/pgadmin4  # Web-based GUI for managing PostgreSQL databases.
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com    # Login email for pgAdmin web interface.
+      PGADMIN_DEFAULT_PASSWORD: admin              # Login password for pgAdmin web interface.
+    ports:
+      - "5050:80"  # Access pgAdmin at http://localhost:5050
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin  # Persists pgAdmin configuration and saved servers.
+    depends_on:
+      db:
+        condition: service_healthy  # Waits for the db healthcheck to pass before starting pgAdmin.
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
 
 # ---------------------------------------------
 # Detailed Explanation of Each Component
