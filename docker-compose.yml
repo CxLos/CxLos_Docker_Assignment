@@ -17,10 +17,6 @@
 
 # docker-compose.yml
 
-# ---------------------------------------------
-# Docker Compose Configuration File
-# ---------------------------------------------
-
 # This Docker Compose file defines and configures the services required to run
 # the FastAPI Calculator application. Docker Compose is a tool that allows you
 # to define and manage multi-container Docker applications using a YAML file.
@@ -31,6 +27,11 @@ version: '3.8'  # Specify the version of Docker Compose syntax to use.
 # Services Definition
 services:
   # Service: web
+
+# ===========================================
+# Docker Compose Configuration File
+# ===========================================
+
   web:
     # Build Configuration
     build: .  # Instructs Docker Compose to build the Docker image using the Dockerfile located in the current directory (denoted by '.').

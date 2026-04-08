@@ -200,7 +200,7 @@ jobs:
    needs: security
    if: github.ref == 'refs/heads/main'
    runs-on: ubuntu-latest
-   environment: production
+   environment: production 
    steps:
 
      # STEP 1: Clone the repository to get the Dockerfile for the final build
